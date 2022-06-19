@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+import re
+import sys
+
+pattern = re.compile(r"(^([^:\n]+:){6}[ \n]?)", re.MULTILINE)
+print(pattern.sub('', sys.stdin.read()))

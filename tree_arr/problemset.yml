@@ -1,0 +1,51 @@
+pid: usaa.2022.tree_arr
+title: 'USaA: tree_arr'
+docker-image: programming:latest
+max-score: 100
+
+templates:
+
+  a: &tree_arr-unit-test
+    type: test:exec
+    env:
+      CK_RUN_CASE: '{task-id}'
+    cmd: (cd build && bin/tests; cat file.txt; stat file.txt; exit ${{PIPESTATUS[0]}})
+    max-output-size: 5000
+
+tasks:
+
+# GENERAL ===========
+
+- id: structure-check
+  title: 'Structure Check'
+  type: test:ws
+  strict: true
+  url: https://arena.kpi.fei.tuke.sk/api/v1/conductor
+  headers:
+    Authorization: Token 13f9104844f257aef218120b6e195630fd3ddc46
+  files:
+    package: tree_arr.zip
+    template: template.xml
+  evaluation:
+    response:
+      errors: []
+
+- id: unzip
+  title: 'Prepare Submission'
+  type: system
+  cmd: mkdir student && unzip -j tree_arr.zip tree_arr.c -d student && cp tests/tree_arr.h student/ && cp tests/err.h student/
+
+- id: cmake
+  title: Prepare cmake
+  type: system
+  cmd: mkdir build && cd build && cmake ..
+
+- id: tests-compilation
+  title: 'Compilation of Tests'
+  type: system
+  cmd: cd build && make
+
+- id: 5.1.2
+  title: 'Test_funkcie_PrintSubtree_velkosti_3_podstromom_3'
+  <<: *tree_arr-unit-test
+  score: 3.5

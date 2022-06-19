@@ -1,0 +1,177 @@
+pid: usaa.2022.lqueue
+title: 'USaA: lqueue'
+docker-image: usaatest:latest
+max-score: 100
+
+templates:
+
+  a: &lqueue-unit-test
+    type: test:exec
+    env:
+      CK_RUN_CASE: '{task-id}'
+    cmd: (cd build && bin/tests; exit ${{PIPESTATUS[0]}})
+    max-output-size: 5000
+
+tasks:
+
+# GENERAL ===========
+
+- id: structure-check
+  title: 'Structure Check'
+  type: test:ws
+  strict: true
+  url: https://arena.kpi.fei.tuke.sk/api/v1/conductor
+  headers:
+    Authorization: Token 13f9104844f257aef218120b6e195630fd3ddc46
+  files:
+    package: lqueue.zip
+    template: template.xml
+  evaluation: 
+    response:
+      errors: []
+
+- id: unzip
+  title: 'Prepare Submission'
+  type: system
+  cmd: mkdir student && unzip -j lqueue.zip lqueue.c -d student && cp tests/lqueue.h student/ && cp tests/err.h student/
+
+- id: cmake
+  title: Prepare cmake
+  type: system
+  cmd: mkdir build && cd build && cmake ..
+
+- id: tests-compilation
+  title: 'Compilation of Tests'
+  type: system
+  cmd: cd build && make
+
+- id: 4.4.0
+  title: 'Test_funkcie_Front_s_LQueue_velkosti_NULL'
+  <<: *lqueue-unit-test
+  score: 4.0
+ 
+- id: 4.4.1
+  title: 'Test_funckie_Front_s_volanim_prazdneho_LQueue'
+  <<: *lqueue-unit-test
+  score: 4.0
+ 
+- id: 4.4.2
+  title: 'Test_funkcie_Front_s_velkostou_LQueue_10_a_pevne_danymi_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.4.3
+  title: 'Test_funkcie_Front_s_velkostou_LQueue_10_a_random_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.4.4
+  title: 'Test_funkcie_Front_s_velkostou_LQueue_random_a_random_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.4.5
+  title: 'Test_funkcie_Front_s_velkostou_LQueue_1_a_danym_cislom'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.4.6
+  title: 'Test_funkcie_Front_s_velkostou_LQueue_1_a_jednym_random_cislom'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.0
+  title: 'Test_funkcie_Dequeue_s_LQueue_velkosti_NULL'
+  <<: *lqueue-unit-test
+  score: 4.0
+ 
+- id: 4.5.1
+  title: 'Test_funckie_Dequeue_s_volanim_prazdneho_LQueue'
+  <<: *lqueue-unit-test
+  score: 4.0
+ 
+- id: 4.5.2
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_10_a_pevne_danymi_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.3
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_10_a_random_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+
+- id: 4.5.4
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_1_a_danym_cislom'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.5
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_random_a_random_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.6
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_1_a_random_cislom'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.7
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_10_s_danymi_cislami_a_trojnasobnym_volanim_Dequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.8
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_10_s_danymi_cislami_a_vianasobnym_random_volanim_Dequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.9
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_10_s_random_cislami_a_trojnasobnym_volanim_Dequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.10
+  title: 'Test_funkcie_Dequeue_s_velkostou_LQueue_10_s_random_cislami_a_vianasobnym_random_volanim_Dequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.5.11
+  title: 'Test_funkcie_Dequeue_s_random_velkostou_LQueue_s_random_cislami_a_vianasobnym_random_volanim_Dequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.6.0
+  title: 'Test_funkcie_FrontAndDequeue_s_LQueue_velkosti_NULL'
+  <<: *lqueue-unit-test
+  score: 4.0
+ 
+- id: 4.6.1
+  title: 'Test_funckie_FrontAndDequeue_s_volanim_prazdneho_LQueue'
+  <<: *lqueue-unit-test
+  score: 4.0
+ 
+- id: 4.6.2
+  title: 'Test_funkcie_FrontAndDequeue_s_velkostou_LQueue_10_a_pevne_danymi_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.6.3
+  title: 'Test_funkcie_FrontAndDequeue_s_velkostou_LQueue_2_a_pevne_danymi_cislami'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.6.4
+  title: 'Test_funkcie_FrontAndDequeue_s_velkostou_LQueue_10_s_danymi_cislami_a_trojnasobnym_volanim_FrontAndDequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 
+- id: 4.6.5
+  title: 'Test_funkcie_FrontAndDequeue_s_velkostou_LQueue_10_s_danymi_cislami_a_viacnasobnym_random_volanim_FrontAndDequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+
+- id: 4.6.6
+  title: 'Test_funkcie_FrontAndDequeue_s_velkostou_LQueue_random_s_danymi_cislami_a_viacnasobnym_random_volanim_FrontAndDequeue'
+  <<: *lqueue-unit-test
+  score: 3.8
+ 

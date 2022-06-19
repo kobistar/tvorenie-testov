@@ -1,0 +1,25 @@
+api-url: https://arena.kpi.fei.tuke.sk/gladiator/
+api-url-dev: http://localhost:8010
+master-password: supertajneheslo
+
+presenters:
+  - arena
+
+package:
+  - tests
+  - template.xml
+  - CMakeLists.txt
+  - check_formatter
+
+submission:
+  file-name: lqueue.zip
+  package:
+    - student/lqueue.c: lqueue.c
+  data:
+    student: 
+      group: A0@USAA-2022
+      name: the tester
+      email: the.tester@student.tuke.sk  
+
+docker-image:
+  dockerfile: Dockerfile

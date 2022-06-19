@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "llist.h": "c",
+        "stdlib.h": "c",
+        "time.h": "c",
+        "stdio.h": "c",
+        "unistd.h": "c",
+        "fcntl.h": "c",
+        "io.h": "c"
+    }
+}

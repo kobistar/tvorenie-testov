@@ -1,0 +1,152 @@
+pid: usaa.2022.lstack
+title: 'USaA: lstack'
+docker-image: programming:latest
+max-score: 100
+
+templates:
+
+  a: &lstack-unit-test
+    type: test:exec
+    env:
+      CK_RUN_CASE: '{task-id}'
+    cmd: (cd build && bin/tests; exit ${{PIPESTATUS[0]}})
+    max-output-size: 5000
+
+tasks:
+
+# GENERAL ===========
+
+- id: structure-check
+  title: 'Structure Check'
+  type: test:ws
+  strict: true
+  url: https://arena.kpi.fei.tuke.sk/api/v1/conductor
+  headers:
+    Authorization: Token 13f9104844f257aef218120b6e195630fd3ddc46
+  files:
+    package: lstack.zip
+    template: template.xml
+  evaluation:
+    response:
+      errors: []
+
+- id: unzip
+  title: 'Prepare Submission'
+  type: system
+  cmd: mkdir student && unzip -j lstack.zip lstack.c -d student && cp tests/lstack.h student/ && cp tests/err.h student/
+
+- id: cmake
+  title: Prepare cmake
+  type: system
+  cmd: mkdir build && cd build && cmake ..
+
+- id: tests-compilation
+  title: 'Compilation of Tests'
+  type: system
+  cmd: cd build && make
+
+- id: 4.1.0
+  title: 'Test_funkcie_Top_s_LStask_velkoti_NULL'
+  <<: *lstack-unit-test
+  score: 4.0
+
+
+- id: 4.1.1
+  title: 'Test_funkcie_Top_s_velkostou_LStack_5_s_random_clenmi'
+  <<: *lstack-unit-test
+  score: 6.0
+
+- id: 4.1.2
+  title: 'Test_funkcie_Top_s_velkostou_LStack_5_s_pevnymi_clenmi'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.1.3
+  title: 'Test_funkcie_Top_s_velkostou_LStack_random_s_random_clenmi'
+  <<: *lstack-unit-test
+  score: 6.0
+
+- id: 4.1.4
+  title: 'Test_funkcie_Top_s_velkostou_LStack_0_s_0_clenmi'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.2.0
+  title: 'Test_funkcie_Pop_s_LStask_velkosti_NULL'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.2.1
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_0_s_0_clenmi'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.2.2
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_1_s_pevnym_clenom'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.2.3
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_5_s_pevnymi_clenmi'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.2.4
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_10_s_pevnymi_clenmi_a_trojnasobnym_volanim_Pop'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.2.5
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_10_s_pevnymi_clenmi_a_viacnasobnym_volanim_Pop'
+  <<: *lstack-unit-test
+  score: 6.0
+
+- id: 4.2.6
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_random_s_pevnymi_clenmi_a_viacnasobnym_volanim_Pop'
+  <<: *lstack-unit-test
+  score: 6.0
+
+- id: 4.2.7
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_random_s_pevnymi_clenmi_a_trojnasobnym_volanim_Pop'
+  <<: *lstack-unit-test
+  score: 6.0
+
+- id: 4.2.8
+  title: 'Test_funkcie_Pop_s_velkostou_LStack_random_a_pevnymi_clenmi'
+  <<: *lstack-unit-test
+  score: 6.0
+
+- id: 4.3.0
+  title: 'Test_funkcie_TopAndPop_s_LStask_velkosti_NULL'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.3.1
+  title: 'Test_funkcie_TopAndPop_s_velkostou_LStack_0_a_pevnymi_clenmi'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.3.2
+  title: 'Test_funkcie_TopAndPop_s_velkostou_LStack_10_a_pevnymi_clenmi'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.3.3
+  title: 'Test_funkcie_TopAndPop_s_velkostou_LStack_2_a_pevnymi_clenmi'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.3.4
+  title: 'Test_funkcie_TopAndPop_s_velkostou_LStack_10_s_pevnymi_clenmi_a_trojnasobnym_volanim_TopAndPop'
+  <<: *lstack-unit-test
+  score: 4.0
+
+- id: 4.3.5
+  title: 'Test_funkcie_TopAndPop_s_velkostou_LStack_10_s_pevnymi_clenmi_a_viacnasobnym_volanim_TopAndPop'
+  <<: *lstack-unit-test
+  score: 6.0
+
+- id: 4.3.6
+  title: 'Test_funkcie_TopAndPop_s_velkostou_LStack_random_s_random_clenmi_a_viacnasobnym_volanim_TopAndPop'
+  <<: *lstack-unit-test
+  score: 6.0
